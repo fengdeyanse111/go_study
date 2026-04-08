@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Go 测试页面</title>
+</head>
+
+<body>
+
+    <h1>登录测试</h1>
+
+    <!-- 输入框 -->
+
+    <input type="text" id="username" placeholder="请输入用户名">
+    <button onclick="sendData()">提交</button>
+
+    <p id="result"></p>
+
+    <script>
+        function sendData() {
+            const username = document.getElementById("username").value;
+
+            fetch("/index", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: username
+                })
+            })
+                .then(res => {
+                    // 读取返回的 token
+                    const token = res.headers.get("token");
+                    console.log("token:", token);
+                    return res.text();
+                })
+                .then(data => {
+                    document.getElementById("result").innerText = data;
+                });
+        }
+    </script>
+
+</body>
+
+</html>
